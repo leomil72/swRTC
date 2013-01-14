@@ -1,6 +1,6 @@
 /* This file is part of swRTC library.
-   Please check the README file and the notes
-   inside the swRTC.h file
+   Please read the README file and the notes inside the swRTC.h file
+   to read about the usage of this code.
 */
 
 //Now the library is compatible both with Arduino <=0023 and Arduino >=100
@@ -43,6 +43,10 @@ swRTC::swRTC(void) {
 //private methods
 //
 
+/*
+    *****  WARNING  *****
+    DO NOT MODIFY THE FOLLOWING FUNCTIONS BETWEEN HERE......
+*/
 //set the timer
 void swRTC::setTimer() {
 	float prescaler = 0.0;
@@ -200,7 +204,13 @@ ISR (TIM0_OVF_vect) {
 		}
 	}
 }
+ 
+/*
+    .....AND HERE, UNLESS YOU EXTACLY KNOW WHAT YOU'RE DOING!
+    YOU COULD ALTER THE TIMEKEEPING ALGHORITHM
+*/
 
+/**********************************************************************/
 
 //
 //public methods
@@ -341,12 +351,12 @@ unsigned long swRTC::getTimestamp(int yearT){
 	for (int i=0; i < getMonth()-1; i++){
 		time += daysPerMonth[i]; //find day from month
 	}
-	time = ( time + getDay() ) * 24; //find hour from day
-	time = ( time + getHours() ) * 60; //find minute from hours
+	time = ( time + getDay() ) * 24; //find hours from day
+	time = ( time + getHours() ) * 60; //find minutes from hours
 	time = ( time + getMinutes() ) * 60; //find seconds from minute
 	time += getSeconds(); // add seconds
-	if (time>951847199) { time +=86400; } //year 2000 is a special leap year, so 1 day must be added if date is greater than 29/02/2000
-	return (time-86400L); //because years start at day 0.0, not day 1.
+	if (time > 951847199UL) { time += 86400UL; } //year 2000 is a special leap year, so 1 day must be added if date is greater than 29/02/2000
+	return (time - 86400UL); //because years start at day 0.0, not day 1.
 }
 
 
@@ -372,8 +382,9 @@ boolean swRTC::setDeltaT(float deltaT) {
 // set the internal clock using a timestamp using the epoch passed as argument
 byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	unsigned long dayT;
-	
-	timeT+=86400; //days in the calendar start from Jan., 1 not from Jan., 0
+
+	if (timeT > 951847199UL) { timeT -= 86400UL; } //year 2000 is a special leap year, so 1 day must be added if date is greater than 29/02/2000
+	timeT += 86400; //days in the calendar start from Jan., 1 not from Jan., 0
 	dayT = timeT/(60L*60L*24L);
 	float remaining = timeT-dayT*(60L*60L*24L);
 	int yearT = (dayT / 365.2422);

@@ -4,26 +4,8 @@
 	with contribution of lesto <www.arduino.cc>
 	Inspired by MsTimer2 by Javier Valencia
 
-	History:
-	v. 1.0.5: introduced new method getWeekDay
-	v. 1.0.4: added support for Attiny4313
-	v. 1.0.3: added support for 4 MHz clock
-	v. 1.0.2: first fix of a bug in the algorithm of getTimestamp
-	v. 1.0.1: latest versione, distribuited under the terms of the GNU GPL v.3.0 and any later version
-	v. 1.0:   first stable & complete release of the library
-	v. 0.8.4: the function now can set the internal clock using a timestamp
-	v. 0.8.3: introduced support for Atmega1284
-	v. 0.8.2: fixed a glitch in deltaT and introduced support for deltaT with decimals
-	v. 0.8.1: new deltaT based on seconds/day
-	v. 0.8:   introduced deltaT to correct deviations between computed & real time & Timestamp
-	v. 0.7.1: dropped millis sketch due to the fact that milliseconds is no longer required
-	v. 0.7:   corrected some bug; the support for Attinyx4 now works
-	v. 0.6:   added supporto for Attiny2313
-	v. 0.5:   corrected some bugs 
-	v. 0.4:   addedd support for Atmega640/1280/1281/2560/2561
-	v. 0.3:   added support for Attiny24/44/84 and Atmega644/Atmega644P (Attinyx4 don't work at the moment: FIXED)
-	v. 0.2:   added support for Attiny25/45/85 and Atmega8/8A
-	v. 0.1:   first release - only works on Arduino and Atmega48/88/168/328/328P at 1/8/16 MHz
+	Current version: 1.0.6
+	(For the complete version history, please refer to the README file)
 
 	This library is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public
@@ -40,9 +22,11 @@
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-
 #ifndef swRTC_H
 #define swRTC_H
+
+//library version
+#define swRTC_VERSION 106
 
 //Library is compatible both with Arduino <=0023 and Arduino >=100
 #if defined(ARDUINO) && (ARDUINO >= 100)

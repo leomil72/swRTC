@@ -2,10 +2,12 @@
 ** s w R T C **
 ***************
 
-Software implementation of a Real-Time Clock based on timers for Arduino boards and Atmel microcontrollers 
+The swRTC is a software implementation of a Real-Time Clock for Arduino boards and Atmel microcontrollers.
+It's based on an internal timer and it requires no external hardware.
 
 ********************************************************************
 VERSION HISTORY
+2013/01/14 - v. 1.0.6: fixed a bug in the function used to set the clock given a timestamp
 2012/06/04 - v. 1.0.5: introduced new method getWeekDay
 2012/05/05 - v. 1.0.3: added support for 4 MHz clock (read below)
 2012/04/23 - v. 1.0.2: first fix of a bug in the algorithm of getTimestamp
@@ -30,11 +32,12 @@ REQUIREMENTS
 
 * The swRTC library needs Arduino IDE version 002x/1.0.x to work with Atmega48/88/168/328/328P, Atmega640/1280/1281/2560/2561 and Atmega8/8A.
 * To work with Attiny24/44/84, Attiny25/45/85 and Attiny2313/4313 you need the Tiny Core libraries that you can download from:
-http://code.google.com/p/arduino-tiny/
-* To work with Atmega644/1284 you need the Sanguino core libraries that you can download from:
-http://sanguino.cc/useit
+http://code.google.com/p/arduino-tiny/ (1)
+* To work with Atmega644/1284 you need the 644P/1284P package that you can download from my website (only for IDE 1.0.x):
+http://www.leonardomiliani.com/?p=625&lang=en (2)
 
-Directions to install and use the Tiny and Sanguino cores are provided from their respective authors.
+(1) Directions to install and use the Tiny core are provided from its author.
+(2) Directions to install the mod files can be found inside the package
 
 ********************************************************************
 INSTALLATION
@@ -169,4 +172,4 @@ Written by Leonardo Miliani <leonard AT leonardomiliani DOT com>
 with the contribution of lesto <www.arduino.cc>
 
 ********************************************************************
-Document revision: 16th revision - 2012/06/04
+Document revision: 17th revision - 2013/01/14
