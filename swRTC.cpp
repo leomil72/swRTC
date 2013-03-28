@@ -378,6 +378,25 @@ boolean swRTC::setDeltaT(float deltaT) {
 	return true;
 }
 
+boolean swRTC::setDeltaT(int deltaT) {
+	if ((deltaT<-8400) || (deltaT>8400)) {
+		return false;
+	}
+	delta=deltaT;
+	if (delta==0) {
+		deltaS=0;
+		deltaDir=0;
+	} else {
+		deltaS=abs(864000/delta);
+		deltaDir=delta/(abs(delta));
+		delta=abs(delta);
+	}
+	return true;
+}
+
+int swRTC::getDeltaT(){
+	return deltat;
+}
 
 // set the internal clock using a timestamp using the epoch passed as argument
 byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
