@@ -7,6 +7,7 @@ It's based on an internal timer and it requires no external hardware.
 
 ********************************************************************
 VERSION HISTORY
+2013/03/28 - v. 1.0.6b: added a getDeltaT and setDeltaT with ints
 2013/01/14 - v. 1.0.6: fixed a bug in the function used to set the clock given a timestamp
 2012/06/04 - v. 1.0.5: introduced new method getWeekDay
 2012/05/05 - v. 1.0.3: added support for 4 MHz clock (read below)
