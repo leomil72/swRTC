@@ -70,6 +70,9 @@ class swRTC {
 		boolean isLeapYear(int yearT=NULL);
 		unsigned long getTimestamp(int yearT=NULL);
 		boolean setDeltaT(float deltaT=0.0);
+		boolean setDeltaT(int deltaT=0);
+		int getDeltaT();
+//		float getDeltaT();
 		byte getSeconds();
 		byte getMinutes();
 		byte getHours();

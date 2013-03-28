@@ -319,6 +319,12 @@ int swRTC::getYear() {
 }
 
 
+//return the correction
+int swRTC::getDeltaT() {
+	return delta;
+}
+
+
 //check if the current year is a leap year
 boolean swRTC::isLeapYear(int yearT) {
 	if (yearT==NULL) { yearT=year; }
@@ -361,7 +367,7 @@ unsigned long swRTC::getTimestamp(int yearT){
 
 
 //set deltaT to correct the deviation between computed & real time
-//(given as seconds per day)
+//(float, given as seconds per day)
 boolean swRTC::setDeltaT(float deltaT) {
 	if ((deltaT<-840.0) || (deltaT>840.0)) {
 		return false;
@@ -378,6 +384,23 @@ boolean swRTC::setDeltaT(float deltaT) {
 	return true;
 }
 
+//set deltaT to correct the deviation between computed & real time
+//(integer, given as tenths of seconds per day)
+boolean swRTC::setDeltaT(int deltaT) {
+	if ((deltaT<-8400) || (deltaT>8400)) {
+		return false;
+	}
+	delta=deltaT;
+	if (delta==0) {
+		deltaS=0;
+		deltaDir=0;
+	} else {
+		deltaS=abs(864000/delta);
+		deltaDir=delta/(abs(delta));
+		delta=abs(delta);
+	}
+	return true;
+}
 
 // set the internal clock using a timestamp using the epoch passed as argument
 byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
