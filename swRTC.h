@@ -26,7 +26,7 @@
 #define swRTC_H
 
 //library version
-#define swRTC_VERSION 106
+#define swRTC_VERSION 110
 
 //Library is compatible both with Arduino <=0023 and Arduino >=100
 #if defined(ARDUINO) && (ARDUINO >= 100)
@@ -67,16 +67,18 @@ class swRTC {
 		boolean setDate(byte dayT, byte monthT, int yearT);
 		void startRTC();
 		void stopRTC();
-		boolean isLeapYear(int yearT=NULL);
-		unsigned long getTimestamp(int yearT=NULL);
-		boolean setDeltaT(float deltaT=0.0);
+		boolean isLeapYear(int yearT = 0);
+		unsigned long getTimestamp(int yearT = 0);
+		boolean setDeltaT(double deltaT = 0.0) __attribute__ ((deprecated));
+        boolean setDeltaT(int deltaT = 0);
+        int getDeltaT();
 		byte getSeconds();
 		byte getMinutes();
 		byte getHours();
 		byte getDay();
 		byte getMonth();
 		int getYear();
-		boolean setClockWithTimestamp(unsigned long timeT, int yearT=NULL);
+		boolean setClockWithTimestamp(unsigned long timeT, int yearT = 0);
 		byte weekDay(unsigned long timestamp);
 		byte getWeekDay();
 		

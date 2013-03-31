@@ -11,6 +11,7 @@ swRTC	KEYWORD1
 #######################################
 
 getDay	KEYWORD2
+getDeltaT	KEYWORD2
 getHours	KEYWORD2
 getMinutes	KEYWORD2
 getMonth	KEYWORD2

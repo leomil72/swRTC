@@ -1,6 +1,6 @@
 /* This file is part of swRTC library.
    Please read the README file and the notes inside the swRTC.h file
-   to read about the usage of this code.
+   to know about the usage of this code.
 */
 
 //Now the library is compatible both with Arduino <=0023 and Arduino >=100
@@ -16,26 +16,26 @@
 
 //global variables
 swRTC *lib;
-volatile int delta=0;
-volatile long deltaS=0;
-volatile int8_t deltaDir=0;
-volatile byte starter=0;
-volatile int counterT=0;
-volatile byte hours=0;
-volatile byte minutes=0;
-volatile byte secondsX=0;
-volatile byte day=0;
-volatile byte month=0;
-volatile int year=0;
+volatile int delta = 0;
+volatile long deltaS = 0;
+volatile int8_t deltaDir = 0;
+volatile byte starter = 0;
+volatile int counterT = 0;
+volatile byte hours = 0;
+volatile byte minutes = 0;
+volatile byte secondsX = 0;
+volatile byte day = 0;
+volatile byte month = 0;
+volatile int year = 0;
 volatile byte daysPerMonth[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 //instructions to execute when a new istance of the lib is created
 swRTC::swRTC(void) {
-	isRunning=false;
-	lib=this;
+	isRunning = false;
+	lib = this;
 	setTimer();
-	counterT=0;
-	delta=0;
+	counterT = 0;
+	delta = 0;
 }
 
 
@@ -156,46 +156,46 @@ ISR (TIM0_OVF_vect) {
 #endif
 	byte dayT;
 	counterT++;
-	if (delta!=0) {
+	if (delta != 0) {
 		deltaS--;
-		if (deltaS<=0) {
-			if ((deltaDir>0) && (counterT++<1000)) {
-				deltaS=864000/delta;
+		if (deltaS <= 0) {
+			if ((deltaDir > 0) && (counterT++ < 1000)) {
+				deltaS = 864000UL / delta;
 				counterT++;
 			}
-			if ((deltaDir<0) && (counterT-->=0)) {
-				deltaS=864000/delta;
+			if ((deltaDir < 0) && (counterT-- >= 0)) {
+				deltaS = 864000UL / delta;
 				counterT--;
 			}
 		}
 	}
 		
-	if (counterT>999) { //1000 ms equals to 1 s 
-		counterT=0;
+	if (counterT > 999) { //1000 ms equals to 1 s 
+		counterT = 0;
 		secondsX++;
-		if (secondsX>59) {
-			secondsX=0;
+		if (secondsX > 59) {
+			secondsX = 0;
 			minutes++;
-			if (minutes>59) {
-				minutes=0;
+			if (minutes > 59) {
+				minutes = 0;
 				hours++;
-				if (hours>23) {
-					hours=0;
+				if (hours > 23) {
+					hours = 0;
 					day++;
 					if (month == 2) { //february?
 						if ((*lib).isLeapYear()) {
-							dayT=29;
+							dayT = 29;
 						} else {
-							dayT=28;
+							dayT = 28;
 						}
 					} else {
-						dayT=daysPerMonth[month-1];
+						dayT = daysPerMonth[month - 1];
 					}
-					if (day>dayT) {
-						day=1;
+					if (day > dayT) {
+						day = 1;
 						month++;
-						if (month>12) {
-							month=1;
+						if (month > 12) {
+							month = 1;
 							year++;
 						}
 					}
@@ -206,8 +206,8 @@ ISR (TIM0_OVF_vect) {
 }
  
 /*
-    .....AND HERE, UNLESS YOU EXTACLY KNOW WHAT YOU'RE DOING!
-    YOU COULD ALTER THE TIMEKEEPING ALGHORITHM
+    .....AND HERE, UNLESS YOU EXACTLY KNOW WHAT YOU'RE DOING!
+    YOU COULD ALTER THE TIMEKEEPING ALGORITHM
 */
 
 /**********************************************************************/
@@ -220,13 +220,13 @@ ISR (TIM0_OVF_vect) {
 boolean swRTC::setTime(byte hourT, byte minuteT, byte secondT) {
 
 	//check if the params are correct
-	if ((hourT < 0) || (hourT > 23)) { return false; }
-	if ((minuteT < 0) || (minuteT > 59)) { return false; }
-	if ((secondT < 0) || (secondT > 59)) { return false; }
+    if (hourT > 23) { return false; }
+    if (minuteT > 59) { return false; }
+    if (secondT > 59) { return false; }
 
-	hours=hourT;
-	minutes=minuteT;
-	secondsX=secondT;
+	hours = hourT;
+	minutes = minuteT;
+	secondsX = secondT;
 	return true;
 }
 
@@ -239,9 +239,9 @@ boolean swRTC::setDate(byte dayT, byte monthT, int yearT) {
 	if ((monthT < 1) || (monthT > 12)) { return false; }
 	if (yearT < 0)  { return false; }
 
-	day=dayT;
-	month=monthT;
-	year=yearT;
+	day = dayT;
+	month = monthT;
+	year = yearT;
 	return true;
 }
 
@@ -279,7 +279,7 @@ void swRTC::stopRTC() {
 	TIMSK0 &= ~(1<<TOIE0);
 #endif
 	SREG &= ~(1<<SREG_I);
-	isRunning=false;
+	isRunning = false;
 }
 
 
@@ -321,7 +321,7 @@ int swRTC::getYear() {
 
 //check if the current year is a leap year
 boolean swRTC::isLeapYear(int yearT) {
-	if (yearT==NULL) { yearT=year; }
+	if (yearT == 0) { yearT = year; }
 	if (((yearT % 4) == 0) && ((yearT % 100) != 0) || ((yearT % 400) == 0)) {
 		return true;
 	} else {
@@ -335,25 +335,25 @@ unsigned long swRTC::getTimestamp(int yearT){
 	unsigned long time=0;
 
 	//check the epoch
-	if (yearT==NULL) {
-		yearT=1970;
-	} else if (yearT<1900) { 
-		yearT=1900;
-	} else if (yearT>1970) {
-		yearT=1970;
-	} else if ((yearT!=1900) && (yearT!=1970)) {
-		yearT=1970;
+	if (yearT == 0) {
+		yearT = 1970;
+	} else if (yearT < 1900) { 
+		yearT = 1900;
+	} else if (yearT > 1970) {
+		yearT = 1970;
+	} else if ((yearT != 1900) && (yearT != 1970)) {
+		yearT = 1970;
 	}
 	
 	//One revolution of the Earth is not 365 days but accurately 365.2422 days. 
 	//It is leap year that adjusts this decimal fraction. But...
-	time += (getYear()-yearT)*365.2422;
-	for (int i=0; i < getMonth()-1; i++){
+	time += (getYear() - yearT) * 365.2422;
+	for (int i = 0; i < getMonth() - 1; i++){
 		time += daysPerMonth[i]; //find day from month
 	}
-	time = ( time + getDay() ) * 24; //find hours from day
-	time = ( time + getHours() ) * 60; //find minutes from hours
-	time = ( time + getMinutes() ) * 60; //find seconds from minute
+	time = (time + getDay()) * 24UL; //find hours from day
+	time = (time + getHours()) * 60UL; //find minutes from hours
+	time = (time + getMinutes()) * 60UL; //find seconds from minute
 	time += getSeconds(); // add seconds
 	if (time > 951847199UL) { time += 86400UL; } //year 2000 is a special leap year, so 1 day must be added if date is greater than 29/02/2000
 	return (time - 86400UL); //because years start at day 0.0, not day 1.
@@ -361,21 +361,34 @@ unsigned long swRTC::getTimestamp(int yearT){
 
 
 //set deltaT to correct the deviation between computed & real time
-//(given as seconds per day)
-boolean swRTC::setDeltaT(float deltaT) {
-	if ((deltaT<-840.0) || (deltaT>840.0)) {
+//(floating point, given as seconds per day)
+//@DEPRECATED - this will be removed in the next versions of the 
+//library. Use the int method instead.
+boolean swRTC::setDeltaT(double deltaT) {
+    swRTC::setDeltaT((int)(deltaT * 10));
+}
+
+//set deltaT to correct the deviation between computed & real time
+//(int given as decimal seconds per day)
+boolean swRTC::setDeltaT(int deltaT) {
+	if ((deltaT < -8400) || (deltaT > 8400)) {
 		return false;
 	}
-	delta=deltaT*10;
-	if (delta==0) {
-		deltaS=0;
-		deltaDir=0;
+	if (delta == 0) {
+		deltaS = 0;
+		deltaDir = 0;
 	} else {
-		deltaS=abs(864000/delta);
-		deltaDir=delta/(abs(delta));
-		delta=abs(delta);
+		deltaS = abs(864000UL / delta);
+		deltaDir = delta / (abs(delta));
+		delta = abs(delta);
 	}
 	return true;
+}
+
+
+//return the interal deviation between computed & real time
+int swRTC::getDeltaT() {
+    return delta;
 }
 
 
@@ -384,55 +397,60 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	unsigned long dayT;
 
 	if (timeT > 951847199UL) { timeT -= 86400UL; } //year 2000 is a special leap year, so 1 day must be added if date is greater than 29/02/2000
-	timeT += 86400; //days in the calendar start from Jan., 1 not from Jan., 0
-	dayT = timeT/(60L*60L*24L);
-	float remaining = timeT-dayT*(60L*60L*24L);
+	timeT += 86400UL; //days in the calendar start from Jan., 1 not from Jan., 0
+	dayT = timeT / (60UL * 60UL * 24UL);
+	float remaining = timeT - dayT * (60UL * 60UL * 24UL);
 	int yearT = (dayT / 365.2422);
-	float dayRemaining = dayT-yearT*365.2422;
+	float dayRemaining = dayT-yearT * 365.2422;
 	
-	if (yearRef==NULL) {
-		yearRef=1970;
-	} else if (yearRef<1900) {
-		yearRef=1900;
-	} else if (yearRef>1970) {
-		yearRef=1970;
-	} else if ((yearRef!=1900) && (yearRef!=1970)) {
-		yearRef=1970;
+	if (yearRef == 0) {
+		yearRef = 1970;
+	} else if (yearRef < 1900) {
+		yearRef = 1900;
+	} else if (yearRef > 1970) {
+		yearRef = 1970;
+	} else if ((yearRef != 1900) && (yearRef != 1970)) {
+		yearRef = 1970;
 	}
 	
-	yearT+=yearRef;
-	if (dayRemaining>=365.2422)
+	yearT += yearRef;
+	if (dayRemaining >= 365.2422) {
 		return 1;//my math is wrong!
-	if (yearT<yearRef)
+    }
+	if (yearT < yearRef) {
 		return 2;//year not supported!
-	int monthT=0;
+    }
+	int monthT = 0;
 	while (dayRemaining > daysPerMonth[monthT]){
 		dayRemaining -= daysPerMonth[monthT];
-		if (monthT==1 && isLeapYear(yearT)) {
+		if (monthT == 1 && isLeapYear(yearT)) {
 			dayRemaining--;
 		}
 		monthT++;
 	}
 
 	monthT++;//because month 0 doesn't exist
-	if (monthT>12)
+	if (monthT > 12) {
 		return 3;//my math is wrong!
-	if (dayRemaining>=(60L*60L*24L))
+    }
+	if (dayRemaining >= (60UL*60UL*24UL)) {
 		return 4;//my math is wrong!
-	dayT=dayRemaining;
-	if (dayRemaining-dayT>0){ //add partial day!
+    }
+	dayT = dayRemaining;
+	if (dayRemaining - dayT > 0){ //add partial day!
 		dayT++;
 	}
-	int hoursT = remaining/(60L*60L);
-	remaining = remaining-hoursT*(60L*60L);
-	if (remaining>=(60L*60L))
+	int hoursT = remaining / (60UL * 60UL);
+	remaining = remaining - hoursT * (60UL * 60UL);
+	if (remaining >= (60UL * 60UL)) {
 		return 5;//my math is wrong!
-	int minutesT = remaining/(60L);
-	remaining = remaining-minutesT*(60L);
-	if (remaining>=60)
+    }
+	int minutesT = remaining / 60UL;
+	remaining = remaining-minutesT * 60UL;
+	if (remaining >= 60) {
 		return 6;//my math is wrong!
-
-	year=yearT;
+    }
+	year = yearT;
 	month = monthT;
 	day = dayT;
 	hours = hoursT;
@@ -452,4 +470,3 @@ byte swRTC::weekDay(unsigned long timestamp) {
 byte swRTC::getWeekDay() {
 	return (swRTC::weekDay(swRTC::getTimestamp()));
 }
-
