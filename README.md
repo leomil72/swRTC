@@ -18,7 +18,7 @@ VERSION HISTORY
 2012/01/22 - v. 1.0:   first stable & complete release of the library
 2012/01/20 - v. 0.8.4: the function now can set the internal clock using a timestamp
 2011/11/27 - v. 0.8.3:  introduced support for Atmega1284
-2011/10/09 - v. 0.8.2:  fixed a glitch in deltaT and introduced support for deltaT with decimals
+2011/10/09 - v. 0.8.2:  fixed a glitch in deltaT and introduced support for deltaT with tenths of a second
 2011/10/09 - v. 0.8.1:  new deltaT based on seconds/day
 2011/10/08 - v. 0.8:    introduced deltaT to correct deviations between computed & real time and Timestamp
 2011/10/04 - v. 0.7.1:  dropped millis sketch due to the fact that milliseconds is no longer required
@@ -111,7 +111,7 @@ rtc.setDeltaT(value);
 rtc.getDeltaT();
 
 This is an important feature. Version 0.8 introduces the deltaT correction, a value to correct the deviation between the computed time and the real time, the time that is calculated by the library and the time that is effectively passed on. This function has been introduced to adjust the counter with particular sketches that can use other interrupt functions (i.e. NewSoftSerial library) or systems based on external resonators (like the new Arduino UNO) or interl oscillators, that can be affected by a tollerance of +/-10% over the nominal clock.
-Allowed values are integer values between -8,400 and 8,400 (max -14.0 or +14.0 minutes/day). The deltaT is the number of decimal seconds per day to apply to the RTC to correct the deviation from the real time. If your RTC is faster than the real time, try adjusting deltaT with positive values, if your RTC is slower, try a deltaT with a negative values.
+Allowed values are integer values between -8,400 and 8,400 (max -14.0 or +14.0 minutes/day). The deltaT is the number of tenths of seconds per day to apply to the RTC to correct the deviation from the real time. If your RTC is faster than the real time, try adjusting deltaT with positive values, if your RTC is slower, try a deltaT with a negative values.
 I.e. 102 means a correction of 10200 ms/day, 10.2 seconds/day.
 getDeltaT(), on the other hand, returns the current value of the time correction.
 
