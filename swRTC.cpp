@@ -365,7 +365,7 @@ unsigned long swRTC::getTimestamp(int yearT){
 //@DEPRECATED - this will be removed in the next versions of the 
 //library. Use the int method instead.
 boolean swRTC::setDeltaT(double deltaT) {
-    swRTC::setDeltaT((int)(deltaT * 10));
+    return (swRTC::setDeltaT((int)(deltaT * 10)));
 }
 
 //set deltaT to correct the deviation between computed & real time
@@ -374,6 +374,8 @@ boolean swRTC::setDeltaT(int deltaT) {
 	if ((deltaT < -8400) || (deltaT > 8400)) {
 		return false;
 	}
+	
+	delta = deltaT;
 	if (delta == 0) {
 		deltaS = 0;
 		deltaDir = 0;

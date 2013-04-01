@@ -9,6 +9,7 @@ It's based on an internal timer and it requires no external hardware.
 
 VERSION HISTORY
 
+2013/04/01 - v. 1.1.1: fixed a bug in the new setDeltaT method
 2013/03/31 - v. 1.1.0: setDeltaT now works with ints - new getDeltaT method 
 2013/01/14 - v. 1.0.6: fixed a bug in the function used to set the clock given a timestamp
 2012/06/04 - v. 1.0.5: introduced new method getWeekDay
@@ -196,5 +197,5 @@ lesto - from <www.arduino.cc> forum
 
 ********************************************************************
 
-Document revision: 18th revision - 2013/03/31
+Document revision: 19th revision - 2013/04/01
 
