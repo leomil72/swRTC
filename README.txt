@@ -9,8 +9,9 @@ It's based on an internal timer and it requires no external hardware.
 
 VERSION HISTORY
 
+2013/05/01 - v. 1.1.2: now getDeltaT return the deltaT with the correct sign
 2013/04/01 - v. 1.1.1: fixed a bug in the new setDeltaT method
-2013/03/31 - v. 1.1.0: setDeltaT now works with ints - new getDeltaT method 
+2013/03/31 - v. 1.1.0: setDeltaT now works with ints - new getDeltaT method
 2013/01/14 - v. 1.0.6: fixed a bug in the function used to set the clock given a timestamp
 2012/06/04 - v. 1.0.5: introduced new method getWeekDay
 2012/05/05 - v. 1.0.3: added support for 4 MHz clock (read below)
@@ -61,7 +62,7 @@ This will permit to have both the swRTC library and the delay/millis functions f
 
 USAGE & METHODS
 
-Include the library in your sketch with 
+Include the library in your sketch with
 #include <swRTC.h>
 
 To use the library, first you have to create an instance of the library, i.e.:
@@ -76,7 +77,7 @@ rtc.stopRTC();
 and then to start it again, after changes are done, with:
 rtc.startRTC();
 
-The startRTC() method also sets the HW timer according to the clock frequency of your Arduino/Atmel microcontroller, synchronizing the prescaler of the timer to match the correct timings. 
+The startRTC() method also sets the HW timer according to the clock frequency of your Arduino/Atmel microcontroller, synchronizing the prescaler of the timer to match the correct timings.
 
 To get the time&date you can use the following methods:
 rtc.getSeconds();
@@ -169,7 +170,7 @@ The library supports, due to rounding issues, only the following speed clocks:
 
 HOW IT WORKS
 
-The library sets an internal timer in counter mode to have 1 overflow interrupt exactly every 1 millisecond. 
+The library sets an internal timer in counter mode to have 1 overflow interrupt exactly every 1 millisecond.
 Every 1000 ms it increments the internal registers starting from seconds to years to keep the running of the time.
 
 To do this, is calculates the correct starting value of the counter and the prescaler of the timer, depending on the system frequency. It also chooses the correct timer because this trick only works with 8-bit counters. On Attiny micros, the library must move the delay/millis functions on timer 1 because these micros have only 2 timers, and the 8-bit timer is timer 0.
@@ -191,10 +192,10 @@ Written by Leonardo Miliani <leonard AT leonardomiliani DOT com>
 
 ********************************************************************
 
-CONTRIBUTORS 
+CONTRIBUTORS
 
 lesto - from <www.arduino.cc> forum
 
 ********************************************************************
 
-Document revision: 19th revision - 2013/04/01
+Document revision: 20th revision - 2013/05/01

@@ -53,12 +53,12 @@ void swRTC::setTimer() {
 
 #if defined (ATMEGAx8) || defined (ATMEGA644) || defined (ATMEGAx0)
 	//during setup, disable all the interrupts based on timer
-	TIMSK2 &= ~(1<<TOIE2); 
+	TIMSK2 &= ~(1<<TOIE2);
 	TIMSK2 &= ~((1<<OCIE2A) | (1<<OCIE2B));
 	//prescaler source clock set to internal Atmega clock (asynch mode)
 	ASSR &= ~(1<<AS2);
 	//this sets the timer to increment the counter until overflow
-	TCCR2A &= ~((1<<WGM21) | (1<<WGM20)); 
+	TCCR2A &= ~((1<<WGM21) | (1<<WGM20));
 	TCCR2B &= ~(1<<WGM22);
 	//the following code sets the prescaler depending on the system clock
 	if (F_CPU == 16000000UL) {   // prescaler set to 64
@@ -66,8 +66,8 @@ void swRTC::setTimer() {
 		TCCR2B &= ~((1<<CS21) | (1<<CS20));
 		prescaler = 64.0;
 	} else if ((F_CPU == 8000000UL) || (F_CPU == 4000000UL)) { // prescaler set to 32
-		TCCR2B &= ~(1<<CS22); 
-		TCCR2B |= ((1<<CS21) | (1<<CS20)); 
+		TCCR2B &= ~(1<<CS22);
+		TCCR2B |= ((1<<CS21) | (1<<CS20));
 		prescaler = 32.0;
 	} else if (F_CPU == 1000000UL) { // prescaler set to 8
 		TCCR2B &= ~((1<<CS22) | (1<<CS20));
@@ -76,7 +76,7 @@ void swRTC::setTimer() {
 	}
 #elif defined (ATTINYx5) || defined (ATTINYx313)
 	//during setup, disable all the interrupts based on timer 0
-	TIMSK &= ~(1<<TOIE0); 
+	TIMSK &= ~(1<<TOIE0);
 	TIMSK &= ~((1<<OCIE0A) | (1<<OCIE0B));
 	//normal mode: counter not connected to external pins
 	TCCR0A &= ~((1<<COM0A0) | (1<<COM0A1));
@@ -95,7 +95,7 @@ void swRTC::setTimer() {
 	}
 #elif defined (ATTINYx4)
 	//on Attinyx4 we must use the timer 0 because timer1 is a 16 bit counter
-	
+
 	//during setup, disable all the interrupts based on timer 0
 	TIMSK0 &= ~(1<<TOIE0);
 	TIMSK0 &= ~((1<<OCIE0A) | (1<<OCIE0B));
@@ -122,7 +122,7 @@ void swRTC::setTimer() {
 	TCCR2 &= ~((1<<WGM21) | (1<<WGM20));
 	//prescaler source clock set to internal Atmega clock (asynch mode)
 	ASSR &= ~(1<<AS2);
-	
+
 	if (F_CPU == 1600000UL) {	// prescaler set to 64
 		TCCR2 |= (1<<CS22);
 		TCCR2 &= ~((1<<CS21) | (1<<CS20));
@@ -169,8 +169,8 @@ ISR (TIM0_OVF_vect) {
 			}
 		}
 	}
-		
-	if (counterT > 999) { //1000 ms equals to 1 s 
+
+	if (counterT > 999) { //1000 ms equals to 1 s
 		counterT = 0;
 		secondsX++;
 		if (secondsX > 59) {
@@ -204,7 +204,7 @@ ISR (TIM0_OVF_vect) {
 		}
 	}
 }
- 
+
 /*
     .....AND HERE, UNLESS YOU EXACTLY KNOW WHAT YOU'RE DOING!
     YOU COULD ALTER THE TIMEKEEPING ALGORITHM
@@ -337,15 +337,15 @@ unsigned long swRTC::getTimestamp(int yearT){
 	//check the epoch
 	if (yearT == 0) {
 		yearT = 1970;
-	} else if (yearT < 1900) { 
+	} else if (yearT < 1900) {
 		yearT = 1900;
 	} else if (yearT > 1970) {
 		yearT = 1970;
 	} else if ((yearT != 1900) && (yearT != 1970)) {
 		yearT = 1970;
 	}
-	
-	//One revolution of the Earth is not 365 days but accurately 365.2422 days. 
+
+	//One revolution of the Earth is not 365 days but accurately 365.2422 days.
 	//It is leap year that adjusts this decimal fraction. But...
 	time += (getYear() - yearT) * 365.2422;
 	for (int i = 0; i < getMonth() - 1; i++){
@@ -362,7 +362,7 @@ unsigned long swRTC::getTimestamp(int yearT){
 
 //set deltaT to correct the deviation between computed & real time
 //(floating point, given as seconds per day)
-//@DEPRECATED - this will be removed in the next versions of the 
+//@DEPRECATED - this will be removed in the next versions of the
 //library. Use the int method instead.
 boolean swRTC::setDeltaT(double deltaT) {
     return (swRTC::setDeltaT((int)(deltaT * 10)));
@@ -374,7 +374,7 @@ boolean swRTC::setDeltaT(int deltaT) {
 	if ((deltaT < -8400) || (deltaT > 8400)) {
 		return false;
 	}
-	
+
 	delta = deltaT;
 	if (delta == 0) {
 		deltaS = 0;
@@ -390,7 +390,7 @@ boolean swRTC::setDeltaT(int deltaT) {
 
 //return the interal deviation between computed & real time
 int swRTC::getDeltaT() {
-    return delta;
+    return (delta * deltaDir);
 }
 
 
@@ -404,7 +404,7 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	float remaining = timeT - dayT * (60UL * 60UL * 24UL);
 	int yearT = (dayT / 365.2422);
 	float dayRemaining = dayT-yearT * 365.2422;
-	
+
 	if (yearRef == 0) {
 		yearRef = 1970;
 	} else if (yearRef < 1900) {
@@ -414,7 +414,7 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	} else if ((yearRef != 1900) && (yearRef != 1970)) {
 		yearRef = 1970;
 	}
-	
+
 	yearT += yearRef;
 	if (dayRemaining >= 365.2422) {
 		return 1;//my math is wrong!
@@ -464,7 +464,7 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 
 //return the day of the week giving a timestamp
 byte swRTC::weekDay(unsigned long timestamp) {
-  return ((timestamp / 86400UL) + 4 ) % 7; 
+  return ((timestamp / 86400UL) + 4 ) % 7;
 }
 
 

@@ -26,7 +26,7 @@
 #define swRTC_H
 
 //library version
-#define swRTC_VERSION 110
+#define swRTC_VERSION 112
 
 //Library is compatible both with Arduino <=0023 and Arduino >=100
 #if defined(ARDUINO) && (ARDUINO >= 100)
@@ -45,7 +45,7 @@
 #elif defined (__AVR_ATtiny24__) || defined (__AVR_ATtiny44__) || defined (__AVR_ATtiny84__)
 #define ATTINYx4
 #elif defined (__AVR_ATmega640__) || defined (__AVR_ATmega1280__) || defined (__AVR_ATmega1281__) || defined (__AVR_ATmega2560__) || defined (__AVR_ATmega2561__)
-#define ATMEGAx0 
+#define ATMEGAx0
 #elif defined (__AVR_ATmega644__) || defined (__AVR_ATmega644P__) || defined (__AVR_ATmega644PA__) || defined (__AVR_ATmega1284P__)
 #define ATMEGA644
 #elif defined (__AVR_ATtiny2313__) || defined (__AVR_ATtiny4313__)
@@ -60,10 +60,10 @@
 #endif
 
 class swRTC {
-	public: 
+	public:
 		//public methods
 		swRTC();
-		boolean setTime(byte hourT, byte minuteT, byte secondT); 
+		boolean setTime(byte hourT, byte minuteT, byte secondT);
 		boolean setDate(byte dayT, byte monthT, int yearT);
 		void startRTC();
 		void stopRTC();
@@ -81,7 +81,7 @@ class swRTC {
 		boolean setClockWithTimestamp(unsigned long timeT, int yearT = 0);
 		byte weekDay(unsigned long timestamp);
 		byte getWeekDay();
-		
+
 	private:
 		//private methods
 		void setTimer();
