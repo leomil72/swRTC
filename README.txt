@@ -9,6 +9,7 @@ It's based on an internal timer and it requires no external hardware.
 
 VERSION HISTORY
 
+2013/05/11 - v. 1.2.0: the libray now supports the Real-Time Counter module of some MCUs
 2013/05/01 - v. 1.1.2: now getDeltaT return the deltaT with the correct sign
 2013/04/01 - v. 1.1.1: fixed a bug in the new setDeltaT method
 2013/03/31 - v. 1.1.0: setDeltaT now works with ints - new getDeltaT method
@@ -119,6 +120,13 @@ getDeltaT(), on the other hand, returns the current value of the time correction
 
 ** I M P O R T A N T **: the use of floating point values in setDelatT() is now DEPRECATED. Old versions of the library that used floats still continue to work (accepting a value that indicates the number of seconds to add/subtract with a single decimal cipher, in the range -840.0..+840.0) but this does not mean that they will do in the future, so it is reccomended that you upgrade your code and start using the new syntax with integer values.
 
+Since release 1.2.0, the library supports the use of the internal Real-Time Counter (RTC) present on several MUCs. This module permits to use the timer 2 in asynchronous mode with an external 32,768 Hz crystal. Setting up the timer 2 with a prescaler of 128, we get 1 overflow every 1 secon so that we can increment the software clock in a more accurate manner. At the moment, the use of deltaT is not supported with the use of the RTC module.
+To use the RTC module (that is present only in Atmega88/168/328, Atmega8, Atmega344/644/1284 and Atmega1280/256x), just add the following #define before the inclusion of the library:
+#define USE_INTERNAL_RTC
+#include "swRTC.h"
+
+The library has been modified and now the .cpp file has been removed, while its content has been included in the header file. This does not change the usage of the library
+
 ********************************************************************
 
 TIMESTAMPS
@@ -198,4 +206,4 @@ lesto - from <www.arduino.cc> forum
 
 ********************************************************************
 
-Document revision: 20th revision - 2013/05/01
+Document revision: 21th revision - 2013/05/11
