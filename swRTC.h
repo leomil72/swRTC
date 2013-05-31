@@ -26,7 +26,7 @@
 #define swRTC_H
 
 //library version
-#define swRTC_VERSION 120
+#define swRTC_VERSION 121
 
 //Library is compatible both with Arduino <=0023 and Arduino >=100
 #if defined(ARDUINO) && (ARDUINO >= 100)
@@ -474,7 +474,7 @@ unsigned long swRTC::getTimestamp(int yearT){
 	//One revolution of the Earth is not 365 days but accurately 365.2422 days.
 	//It is leap year that adjusts this decimal fraction. But...
 	time += (getYear() - yearT) * 365.2422;
-	for (int i = 0; i < getMonth() - 1; i++){
+	for (byte i = 0; i < getMonth() - 1; i++){
 		time += daysPerMonth[i]; //find day from month
 	}
 	time = (time + getDay()) * 24UL; //find hours from day
@@ -548,7 +548,7 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	if (yearT < yearRef) {
 		return 2;//year not supported!
     }
-	int monthT = 0;
+	byte monthT = 0;
 	while (dayRemaining > daysPerMonth[monthT]){
 		dayRemaining -= daysPerMonth[monthT];
 		if (monthT == 1 && isLeapYear(yearT)) {
@@ -568,13 +568,13 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	if (dayRemaining - dayT > 0){ //add partial day!
 		dayT++;
 	}
-	int hoursT = remaining / (60UL * 60UL);
+	byte hoursT = remaining / (60UL * 60UL);
 	remaining = remaining - hoursT * (60UL * 60UL);
 	if (remaining >= (60UL * 60UL)) {
 		return 5;//my math is wrong!
     }
-	int minutesT = remaining / 60UL;
-	remaining = remaining-minutesT * 60UL;
+	byte minutesT = remaining / 60UL;
+	remaining = remaining - minutesT * 60UL;
 	if (remaining >= 60) {
 		return 6;//my math is wrong!
     }

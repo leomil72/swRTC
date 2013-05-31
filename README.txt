@@ -9,6 +9,7 @@ It's based on an internal timer and it requires no external hardware.
 
 VERSION HISTORY
 
+2013/05/31 - v. 1.2.1: changed a couple ov variables from int to byte type.
 2013/05/11 - v. 1.2.0: the libray now supports the Real-Time Counter module of some MCUs
 2013/05/01 - v. 1.1.2: now getDeltaT return the deltaT with the correct sign
 2013/04/01 - v. 1.1.1: fixed a bug in the new setDeltaT method
@@ -206,4 +207,4 @@ lesto - from <www.arduino.cc> forum
 
 ********************************************************************
 
-Document revision: 21th revision - 2013/05/11
+Last document revision: 2013/05/31
