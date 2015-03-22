@@ -89,7 +89,7 @@ class swRTC {
 		byte getDay();
 		byte getMonth();
 		int getYear();
-		boolean setClockWithTimestamp(unsigned long timeT, int yearT = 0);
+		byte setClockWithTimestamp(unsigned long timeT, int yearT = 0);
 		byte weekDay(unsigned long timestamp);
 		byte getWeekDay();
 
