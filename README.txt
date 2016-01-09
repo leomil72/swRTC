@@ -208,4 +208,4 @@ lesto - from <www.arduino.cc> forum
 
 ********************************************************************
 
-Last document revision: 2013/05/31
+Last document revision: 2016/01/09
