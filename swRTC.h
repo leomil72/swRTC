@@ -26,7 +26,7 @@
 #define swRTC_H
 
 //library version
-#define swRTC_VERSION 121
+#define swRTC_VERSION 122
 
 //Library is compatible both with Arduino <=0023 and Arduino >=100
 #if defined(ARDUINO) && (ARDUINO >= 100)
@@ -482,6 +482,13 @@ unsigned long swRTC::getTimestamp(int yearT){
 	time = (time + getMinutes()) * 60UL; //find seconds from minute
 	time += getSeconds(); // add seconds
 	if (time > 951847199UL) { time += 86400UL; } //year 2000 is a special leap year, so 1 day must be added if date is greater than 29/02/2000
+	//the code below checks if, in case of a leap year, the date is before or past the 29th of februray:
+	//if no, the leap day hasn't been yet reached so we have to subtract a day
+	if (isLeapYear(getYear())) {
+	    if (getMonth() <= 2 ) {
+	        time -= 86400UL;
+	    }
+	}     
 	return (time - 86400UL); //because years start at day 0.0, not day 1.
 }
 
