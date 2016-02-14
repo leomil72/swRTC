@@ -26,7 +26,7 @@
 #define swRTC_H
 
 //library version
-#define swRTC_VERSION 123
+#define swRTC_VERSION 124
 
 //Library is compatible both with Arduino <=0023 and Arduino >=100
 #if defined(ARDUINO) && (ARDUINO >= 100)

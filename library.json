@@ -1,0 +1,23 @@
+{
+"name": "swRTC",
+"frameworks": "Arduino",
+"keywords": "software, rtc, real-time, clock, realtime, real, time",
+"description": "Software implementation of a Real-Time Clock for Arduino boards and Atmel microcontrollers.",
+"authors":
+[
+    {
+        "name": "Leonardo Miliani",
+        "email": "leonardo Miliani",
+        "url": "http://www.leonardomiliani.com,
+        "maintainer": true
+    },
+    {
+        "name": "lesto"
+    }
+],
+"repository":
+{
+    "type": "git",
+    "url": "https://github.com/leomil72/swRTC"
+}
+}

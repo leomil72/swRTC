@@ -9,6 +9,7 @@ It's based on an internal timer and it requires no external hardware.
 
 VERSION HISTORY
 
+2016/02/14 - v. 1.2.4: updated to use with latest Arduino IDE branches (>=1.6.7)
 2016/02/14 - v. 1.2.3: fixed the type of the prototype of the function setClockWithTimestamp
 2016/01/09 - v. 1.2.2: fixed a bug in the timestamp code that returned a wrong value until february, 29th for leap year
 2013/05/31 - v. 1.2.1: changed a couple ov variables from int to byte type.
