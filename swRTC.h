@@ -26,7 +26,7 @@
 #define swRTC_H
 
 //library version
-#define swRTC_VERSION 122
+#define swRTC_VERSION 123
 
 //Library is compatible both with Arduino <=0023 and Arduino >=100
 #if defined(ARDUINO) && (ARDUINO >= 100)
@@ -89,7 +89,7 @@ class swRTC {
 		byte getDay();
 		byte getMonth();
 		int getYear();
-		boolean setClockWithTimestamp(unsigned long timeT, int yearT = 0);
+		byte setClockWithTimestamp(unsigned long timeT, int yearT = 0);
 		byte weekDay(unsigned long timestamp);
 		byte getWeekDay();
 
