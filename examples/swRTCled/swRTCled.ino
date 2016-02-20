@@ -14,7 +14,7 @@
 
 #include <swRTC.h>
 swRTC rtc;
-#define LED_PIN 13 //change this to wathever you want
+#define LED_PIN 8 //change this to wathever you want
 byte state=1;
 byte second;
 
