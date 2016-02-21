@@ -26,7 +26,7 @@
 #define swRTC_H
 
 //library version
-#define swRTC_VERSION 124
+#define swRTC_VERSION 125
 
 //Library is compatible both with Arduino <=0023 and Arduino >=100
 #if defined(ARDUINO) && (ARDUINO >= 100)
@@ -282,11 +282,11 @@ ISR (TIM0_OVF_vect) {
 	if (delta != 0) {
 		deltaS--;
 		if (deltaS <= 0) {
-			if ((deltaDir > 0) && (counterT++ < 1000)) {
+			if ((deltaDir > 0) && ((counterT + 1) < 1000)) {
 				deltaS = 864000UL / delta;
 				counterT++;
 			}
-			if ((deltaDir < 0) && (counterT-- >= 0)) {
+			if ((deltaDir < 0) && ((counterT - 1) >= 0)) {
 				deltaS = 864000UL / delta;
 				counterT--;
 			}

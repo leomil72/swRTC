@@ -9,6 +9,7 @@ It's based on an internal timer and it requires no external hardware.
 
 VERSION HISTORY
 
+2016/02/21 - v. 1.2.5: fixed a bug into the deltaT arithmetics that leads to double count the computation.
 2016/02/14 - v. 1.2.4: updated to use with latest Arduino IDE branches (>=1.6.7)
 2016/02/14 - v. 1.2.3: fixed the type of the prototype of the function setClockWithTimestamp
 2016/01/09 - v. 1.2.2: fixed a bug in the timestamp code that returned a wrong value until february, 29th for leap year
@@ -118,7 +119,7 @@ rtc.setDeltaT(value);
 rtc.getDeltaT();
 
 This is an important feature. Version 0.8 introduces the deltaT correction, a value to correct the deviation between the computed time and the real time, the time that is calculated by the library and the time that is effectively passed on. This function has been introduced to adjust the counter with particular sketches that can use other interrupt functions (i.e. NewSoftSerial library) or systems based on external resonators (like the new Arduino UNO) or interl oscillators, that can be affected by a tollerance of +/-10% over the nominal clock.
-Allowed values are integer values between -8,400 and 8,400 (max -14.0 or +14.0 minutes/day). The deltaT is the number of tenths of seconds per day to apply to the RTC to correct the deviation from the real time. If your RTC is faster than the real time, try adjusting deltaT with positive values, if your RTC is slower, try a deltaT with a negative values.
+Allowed values are integer values between -8,400 and 8,400 (max -14.0 or +14.0 minutes/day). The deltaT is the number of tenths of seconds per day to apply to the RTC to correct the deviation from the real time. If your RTC is faster than the real time, try adjusting deltaT with negative values, if your RTC is slower, try a deltaT with a positive values.
 I.e. 102 means a correction of 10200 ms/day, 10.2 seconds/day.
 getDeltaT(), on the other hand, returns the current value of the time correction.
 
@@ -210,4 +211,4 @@ lesto - from <www.arduino.cc> forum
 
 ********************************************************************
 
-Last document revision: 2016/02/14
+Last document revision: 2016/02/21
