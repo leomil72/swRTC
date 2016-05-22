@@ -26,7 +26,7 @@
 #define swRTC_H
 
 //library version
-#define swRTC_VERSION 125
+#define swRTC_VERSION 126
 
 //Library is compatible both with Arduino <=0023 and Arduino >=100
 #if defined(ARDUINO) && (ARDUINO >= 100)
@@ -531,12 +531,10 @@ int swRTC::getDeltaT() {
 byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	unsigned long dayT;
 
-	if (timeT > 951847199UL) { timeT -= 86400UL; } //year 2000 is a special leap year, so 1 day must be added if date is greater than 29/02/2000
-	timeT += 86400UL; //days in the calendar start from Jan., 1 not from Jan., 0
 	dayT = timeT / (60UL * 60UL * 24UL);
-	float remaining = timeT - dayT * (60UL * 60UL * 24UL);
+	float remaining = float(timeT - dayT * (60UL * 60UL * 24UL));
 	int yearT = (dayT / 365.2422);
-	float dayRemaining = dayT-yearT * 365.2422;
+	float dayRemaining = dayT - yearT * 365.2422;
 
 	if (yearRef == 0) {
 		yearRef = 1970;
@@ -566,7 +564,9 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 
 	monthT++;//because month 0 doesn't exist
 	if (monthT > 12) {
-		return 3;//my math is wrong!
+	    monthT = 1;
+	    yearT++;
+		//return 3;//my math is wrong!
     }
 	if (dayRemaining >= (60UL*60UL*24UL)) {
 		return 4;//my math is wrong!
@@ -588,6 +588,28 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	year = yearT;
 	month = monthT;
 	day = dayT;
+	//with leap years we must consider that there's a day more in the calendar
+	//and at the jan., 1st the count rolls back to dec, 31th. so we must check
+	//the next year
+	if ((day == 31) && (month == 12)) {
+	    if (isLeapYear(year + 1)) {
+	        yearT++;
+	    }
+	}; 
+	//in leap years we have a day more but we also be careful if we are on feb., 28th
+	//because we must go to feb., 29th
+	if (isLeapYear(yearT)) {
+	    day++;
+	    month == 2 ? dayT = daysPerMonth[month - 1] + 1 : dayT = daysPerMonth[month - 1];
+	    if (day > dayT) {
+	        day = 1;
+	        month++;
+	        if (month > 12) {
+	            month = 1;
+	            year++;
+	        }
+	    } 
+	}
 	hours = hoursT;
 	minutes = minutesT;
 	secondsX = remaining;

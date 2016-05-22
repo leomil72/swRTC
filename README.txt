@@ -9,6 +9,7 @@ It's based on an internal timer and it requires no external hardware.
 
 VERSION HISTORY
 
+2016/05/21 - v. 1.2.6: fixed timestamp functions when we are in leap years (I hope definitely..)
 2016/02/21 - v. 1.2.5: fixed a bug into the deltaT arithmetics that leads to double count the computation.
 2016/02/14 - v. 1.2.4: updated to use with latest Arduino IDE branches (>=1.6.7)
 2016/02/14 - v. 1.2.3: fixed the type of the prototype of the function setClockWithTimestamp
@@ -211,4 +212,4 @@ lesto - from <www.arduino.cc> forum
 
 ********************************************************************
 
-Last document revision: 2016/02/21
+Last document revision: 2016/05/22
