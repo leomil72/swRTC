@@ -26,7 +26,7 @@
 #define swRTC_H
 
 //library version
-#define swRTC_VERSION 126
+#define swRTC_VERSION 127
 
 //Library is compatible both with Arduino <=0023 and Arduino >=100
 #if defined(ARDUINO) && (ARDUINO >= 100)
@@ -53,14 +53,20 @@
 #define ATMEGA644
 #elif defined (__AVR_ATtiny2313__) || defined (__AVR_ATtiny4313__)
 #define ATTINYx313
+#elif defined (__AVR_ATmega32U4__)
+#define ATMEGAxU
+#if (F_CPU!=16000000UL)
+#error Sorry, Atmega32U4 is supported only at 16 MHz
+#endif
 #else
 #error Sorry, microcontroller not supported!
 #endif
 
 //RTC module is preset in: ATMEGA8, ATMEGAx44, ATMEGAx8, ATMEGAx0
 //RTC is NOT in: ATTINYx4, ATTINYx5, ATTINYx313
+//Not sure on: ATMEGA32u4 
 #if defined (USE_INTERNAL_RTC)
-#if defined (ATTINYx4) || defined (ATTINYx313) || defined (ATTINYx5)
+#if defined (ATTINYx4) || defined (ATTINYx313) || defined (ATTINYx5) || defined(ATMEGAxU)
 #error This MCU does NOT have the RTC module
 #endif
 #endif
@@ -109,7 +115,11 @@ swRTC *lib;
 volatile int delta = 0;
 volatile long deltaS = 0;
 volatile int8_t deltaDir = 0;
+#if defined(ATMEGAxU)
+volatile unsigned int starter = 0;
+#else
 volatile byte starter = 0;
+#endif
 volatile int counterT = 0;
 volatile byte hours = 0;
 volatile byte minutes = 0;
@@ -253,11 +263,22 @@ void swRTC::setTimer() {
 		prescaler = 8.0;
 	}
 #endif
+#elif defined (ATMEGAxU)
+    //during setup, disable all the interrupts based on timer3
+    TIMSK3 &= ~((1<<TOIE3) | (1<<OCIE3A) | (1<<OCIE3B) | (1<<OCIE3C) | (1<<ICIE3));
+    //normal mode: counter incremented until overflow, prescaler set to /1
+    TCCR3A &= ~((1<<WGM31) | (1<<WGM30));
+    TCCR3B &= ~((1<<WGM33) | (1<<WGM32) | (1<<CS32) | (1<<CS31));
+    TCCR3B |= (1<<CS30);
+    //TCCR3B = 1;
+    prescaler = 1.0;
 #endif
 
 //set the initial value of the counter depending on the prescaler
 #if defined (USE_INTERNAL_RTC)
 	starter = 0;
+#elif defined (ATMEGAxU)
+	starter = 65536 - (uint16_t)((float)F_CPU * 0.001 / prescaler); //for 16 MHz: 49536
 #else
 	starter = 256 - (int)((float)F_CPU * 0.001 / prescaler);
 #endif
@@ -274,6 +295,9 @@ ISR(TIMER0_OVF_vect) {
 #elif defined (ATTINYx4) || defined (ATTINYx5)
 ISR (TIM0_OVF_vect) {
 	TCNT0 = starter;
+#elif defined (ATMEGAxU)
+ISR (TIMER3_OVF_vect) {
+    TCNT3 = starter;
 #endif
 	byte dayT;
 
@@ -388,6 +412,9 @@ void swRTC::startRTC() {
 #elif defined (ATTINYx4)
 	TCNT0 = starter;
 	TIMSK0 |= (1<<TOIE0);
+#elif defined (ATMEGAxU)
+    TCNT3 = starter;
+	TIMSK3 |= (1<<TOIE3);
 #endif
 	SREG |= (1<<SREG_I);
 	isRunning=true;
@@ -403,6 +430,8 @@ void swRTC::stopRTC() {
 	TIMSK &= ~(1<<TOIE0);
 #elif defined (ATTINYx4)
 	TIMSK0 &= ~(1<<TOIE0);
+#elif defined (ATMEGAxU)
+	TIMSK3 &= ~(1<<TOIE3);
 #endif
 	SREG &= ~(1<<SREG_I);
 	isRunning = false;
