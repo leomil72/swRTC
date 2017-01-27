@@ -63,8 +63,7 @@
 #endif
 
 //RTC module is preset in: ATMEGA8, ATMEGAx44, ATMEGAx8, ATMEGAx0
-//RTC is NOT in: ATTINYx4, ATTINYx5, ATTINYx313
-//Not sure on: ATMEGA32u4 
+//RTC is NOT in: ATTINYx4, ATTINYx5, ATTINYx313, ATMEGA32u4
 #if defined (USE_INTERNAL_RTC)
 #if defined (ATTINYx4) || defined (ATTINYx313) || defined (ATTINYx5) || defined(ATMEGAxU)
 #error This MCU does NOT have the RTC module

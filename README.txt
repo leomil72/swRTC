@@ -9,6 +9,7 @@ It's based on an internal timer and it requires no external hardware.
 
 VERSION HISTORY
 
+2017/01/27 - v. 1.2.7: added support for ATmega32U4 (thanks to Esteban Torre and piluex)
 2016/05/21 - v. 1.2.6: fixed timestamp functions when we are in leap years (I hope definitely..)
 2016/02/21 - v. 1.2.5: fixed a bug into the deltaT arithmetics that leads to double count the computation.
 2016/02/14 - v. 1.2.4: updated to use with latest Arduino IDE branches (>=1.6.7)
@@ -175,10 +176,14 @@ The library uses the Timer 0 because Timer 1 is a 16 bit counter that is a littl
 ATMEL Atmega644/1284
 The library uses the Timer 2, so keep it in mind if you think to use PWM on phisical pins 20 & 21.
 
+ATMEL ATmega32U4:
+The library uses the Timer 3 on this chip.
+
 ** I M P O R T A N T **
 The library supports, due to rounding issues, only the following speed clocks:
 - Atmega644/1284, Atmega48/88/168/328, Atmega8, Atmega640/1280/1281/2560/2561: 1, 4, 8, and 16 MHz
 - Attiny25/45/85, Attiny24/44/84, Attiny2313: 1, 8, and 16 MHz
+- Atmega32U4: only 16 MHz
 
 ********************************************************************
 
@@ -212,4 +217,4 @@ lesto - from <www.arduino.cc> forum
 
 ********************************************************************
 
-Last document revision: 2016/05/22
+Last document revision: 2017/01/27
