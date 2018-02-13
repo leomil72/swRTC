@@ -9,6 +9,7 @@ It's based on an internal timer and it requires no external hardware.
 
 VERSION HISTORY
 
+2018/02/13 - v. 1.2.8: Fixed a typo that broke the compatibility with Atmega644
 2017/01/27 - v. 1.2.7: added support for ATmega32U4 (thanks to Esteban Torre and piluex)
 2016/05/21 - v. 1.2.6: fixed timestamp functions when we are in leap years (I hope definitely..)
 2016/02/21 - v. 1.2.5: fixed a bug into the deltaT arithmetics that leads to double count the computation.
@@ -217,4 +218,4 @@ lesto - from <www.arduino.cc> forum
 
 ********************************************************************
 
-Last document revision: 2017/01/27
+Last document revision: 2018/02/13

@@ -26,7 +26,7 @@
 #define swRTC_H
 
 //library version
-#define swRTC_VERSION 127
+#define swRTC_VERSION 128
 
 //Library is compatible both with Arduino <=0023 and Arduino >=100
 #if defined(ARDUINO) && (ARDUINO >= 100)
@@ -62,7 +62,7 @@
 #error Sorry, microcontroller not supported!
 #endif
 
-//RTC module is preset in: ATMEGA8, ATMEGAx44, ATMEGAx8, ATMEGAx0
+//RTC module is preset in: ATMEGA8, ATMEGAX4, ATMEGAx8, ATMEGAx0
 //RTC is NOT in: ATTINYx4, ATTINYx5, ATTINYx313, ATMEGA32u4
 #if defined (USE_INTERNAL_RTC)
 #if defined (ATTINYx4) || defined (ATTINYx313) || defined (ATTINYx5) || defined(ATMEGAxU)
@@ -150,7 +150,7 @@ swRTC::swRTC(void) {
 void swRTC::setTimer() {
 	float prescaler = 0.0;
 
-#if defined (ATMEGAx8) || defined (ATMEGAx44) || defined (ATMEGAx0)
+#if defined (ATMEGAx8) || defined (ATMEGA644) || defined (ATMEGAx0)
 	//during setup, disable all the interrupts based on timer
 	TIMSK2 &= ~(1<<TOIE2);
 	TIMSK2 &= ~((1<<OCIE2A) | (1<<OCIE2B));
@@ -516,7 +516,7 @@ unsigned long swRTC::getTimestamp(int yearT){
 	    if (getMonth() <= 2 ) {
 	        time -= 86400UL;
 	    }
-	}     
+	}
 	return (time - 86400UL); //because years start at day 0.0, not day 1.
 }
 
@@ -623,7 +623,7 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	    if (isLeapYear(year + 1)) {
 	        yearT++;
 	    }
-	}; 
+	};
 	//in leap years we have a day more but we also be careful if we are on feb., 28th
 	//because we must go to feb., 29th
 	if (isLeapYear(yearT)) {
@@ -636,7 +636,7 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	            month = 1;
 	            year++;
 	        }
-	    } 
+	    }
 	}
 	hours = hoursT;
 	minutes = minutesT;
