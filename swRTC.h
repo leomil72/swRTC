@@ -26,7 +26,7 @@
 #define swRTC_H
 
 //library version
-#define swRTC_VERSION 128
+#define swRTC_VERSION 129
 
 //Library is compatible both with Arduino <=0023 and Arduino >=100
 #if defined(ARDUINO) && (ARDUINO >= 100)
@@ -560,7 +560,7 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	unsigned long dayT;
 
 	dayT = timeT / (60UL * 60UL * 24UL);
-	float remaining = float(timeT - dayT * (60UL * 60UL * 24UL));
+	float remaining = float(timeT - (dayT * 86400UL));
 	int yearT = (dayT / 365.2422);
 	float dayRemaining = dayT - yearT * 365.2422;
 
@@ -596,16 +596,16 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	    yearT++;
 		//return 3;//my math is wrong!
     }
-	if (dayRemaining >= (60UL*60UL*24UL)) {
+	if (dayRemaining >= 86400UL) {
 		return 4;//my math is wrong!
     }
 	dayT = dayRemaining;
 	if (dayRemaining - dayT > 0){ //add partial day!
 		dayT++;
 	}
-	byte hoursT = remaining / (60UL * 60UL);
-	remaining = remaining - hoursT * (60UL * 60UL);
-	if (remaining >= (60UL * 60UL)) {
+	byte hoursT = remaining / 3600UL;
+	remaining = remaining - hoursT * 3600UL;
+	if (remaining >= 3600UL) {
 		return 5;//my math is wrong!
     }
 	byte minutesT = remaining / 60UL;
@@ -638,6 +638,7 @@ byte swRTC::setClockWithTimestamp(unsigned long timeT, int yearRef) {
 	        }
 	    }
 	}
+	if (day == 0 ) day = 1;
 	hours = hoursT;
 	minutes = minutesT;
 	secondsX = remaining;
